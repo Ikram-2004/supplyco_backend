@@ -126,3 +126,5 @@ STATIC_URL = 'static/'
 
 
 
+#C:\Program Files\PostgreSQL\17\bin
+#cd C:\Users\hp\Desktop\django_database\databaseA

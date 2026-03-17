@@ -18,3 +18,7 @@ def auto_update():
 
         print("Sleeping for 5 minutes...\n")
         time.sleep(300)
+
+#for running this auto update
+        #from inventory.simulate_updates import auto_update
+#auto_update()
