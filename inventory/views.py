@@ -28,31 +28,77 @@
 
 
 
+#from rest_framework.decorators import api_view
+#from rest_framework.response import Response
+#from .models import Stock
+#from django.utils.dateparse import parse_datetime
+
+#API_KEY = "MY_SUPPLYCO_SECRET_KEY"   # <-- NO SPACE BEFORE THIS
+
+#@api_view(['GET'])
+#def updated_stock(request):
+
+ # api_key = request.headers.get("X-API-KEY") or request.GET.get("api_key")
+
+  #  if api_key != API_KEY:
+   #     return Response({"error": "Unauthorized"}, status=401)
+
+    #last_sync_time = request.GET.get('last_sync_time')
+
+    #if last_sync_time:
+     #   last_sync_time = parse_datetime(last_sync_time)
+      #  stocks = Stock.objects.filter(
+       #     last_updated__gt=last_sync_time
+        #).order_by('last_updated')
+    #else:
+     #   stocks = Stock.objects.all().order_by('last_updated')
+
+    #data = [
+     #   {
+      #      "store": stock.store_id,
+       #     "item": stock.item_id,
+        #    "quantity": stock.quantity,
+         #   "last_updated": stock.last_updated
+       # }
+        #for stock in stocks
+    #]
+
+    #return Response(data)
+
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Stock
 from django.utils.dateparse import parse_datetime
 
-API_KEY = "MY_SUPPLYCO_SECRET_KEY"   # <-- NO SPACE BEFORE THIS
+API_KEY = "MY_SUPPLYCO_SECRET_KEY"
 
 @api_view(['GET'])
 def updated_stock(request):
 
-  api_key = request.headers.get("X-API-KEY") or request.GET.get("api_key")
+    # ✅ FIX 1: correct variable
+    key = request.headers.get("X-API-KEY") or request.GET.get("api_key")
 
-    if api_key != API_KEY:
+    if key != API_KEY:
         return Response({"error": "Unauthorized"}, status=401)
 
+    # ✅ GET TIME
     last_sync_time = request.GET.get('last_sync_time')
 
     if last_sync_time:
-        last_sync_time = parse_datetime(last_sync_time)
+        parsed_time = parse_datetime(last_sync_time)
+
+        # ✅ FIX 2: handle invalid time
+        if parsed_time is None:
+            return Response({"error": "Invalid datetime format"}, status=400)
+
         stocks = Stock.objects.filter(
-            last_updated__gt=last_sync_time
+            last_updated__gt=parsed_time
         ).order_by('last_updated')
     else:
         stocks = Stock.objects.all().order_by('last_updated')
 
+    # ✅ RESPONSE
     data = [
         {
             "store": stock.store_id,
@@ -64,9 +110,6 @@ def updated_stock(request):
     ]
 
     return Response(data)
-
-
-
 
 
 
