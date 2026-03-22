@@ -38,7 +38,7 @@ API_KEY = "MY_SUPPLYCO_SECRET_KEY"   # <-- NO SPACE BEFORE THIS
 @api_view(['GET'])
 def updated_stock(request):
 
-   key = request.headers.get("X-API-KEY") or request.GET.get("api_key")
+  api_key = request.headers.get("X-API-KEY") or request.GET.get("api_key")
 
     if api_key != API_KEY:
         return Response({"error": "Unauthorized"}, status=401)
