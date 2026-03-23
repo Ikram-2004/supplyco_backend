@@ -61,6 +61,7 @@ def updated_stock(request):
             "store": stock.store_id,
             "item": stock.item_id,
             "quantity": stock.quantity,
+            "price": stock.item.price_per_kg,
             "last_updated": stock.last_updated
         }
         for stock in stocks
