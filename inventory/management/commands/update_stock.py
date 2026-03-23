@@ -21,10 +21,10 @@
         #self.stdout.write("✅ Stock update completed")
 
 
-
-        import random
+import random
 from django.core.management.base import BaseCommand
 from inventory.models import Stock
+
 
 class Command(BaseCommand):
     help = "Update stock with random values and fix specific item"
