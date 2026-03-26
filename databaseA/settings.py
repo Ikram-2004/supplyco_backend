@@ -75,16 +75,41 @@ WSGI_APPLICATION = 'databaseA.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+#DATABASES = {
+ #   'default': {
+  #      'ENGINE': 'django.db.backends.postgresql',
+   #     'NAME': 'ikram_django_render',
+    #    'USER': 'ikram_django_render_user',
+     #   'PASSWORD': '2nMglb9DqzHdMpyvMZ471NAGzRqiG3Su',
+      #  'HOST': 'dpg-d6sgnkma2pns7386mebg-a.oregon-postgres.render.com',
+       # 'PORT': '5432',
+    #}
+#}
+
+
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ikram_django_render',
-        'USER': 'ikram_django_render_user',
-        'PASSWORD': '2nMglb9DqzHdMpyvMZ471NAGzRqiG3Su',
-        'HOST': 'dpg-d6sgnkma2pns7386mebg-a.oregon-postgres.render.com',
+        'NAME': 'neondb',
+        'USER': 'neondb_owner',
+        'PASSWORD': 'npg_iJRw4ABW9FpZ',
+        'HOST': 'ep-bitter-truth-a1r2wcc5-pooler.ap-southeast-1.aws.neon.tech',
         'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
+
+
+
+
+
+
+
+
 
 #postgresql://ikram_django_render_user:2nMglb9DqzHdMpyvMZ471NAGzRqiG3Su@dpg-d6sgnkma2pns7386mebg-a.oregon-postgres.render.com/ikram_django_render
 
