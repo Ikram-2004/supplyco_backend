@@ -54,7 +54,7 @@ def updated_stock(request):
     if key != API_KEY:
         return Response({"error": "Unauthorized"}, status=401)
 
-    # Optional sync filter
+    # OPTIONAL SYNC FILTER
     last_sync_time = request.GET.get('last_sync_time')
 
     if last_sync_time:
@@ -67,14 +67,15 @@ def updated_stock(request):
     else:
         stocks = Stock.objects.all().order_by('last_updated')
 
-    # Optimized response
-    data = list(
-        stocks.values(
-            'store_id',
-            'item_id',
-            'quantity',
-            'last_updated'
-        )
-    )
+    # RESPONSE DATA
+    data = [
+        {
+            "store": stock.store_id,
+            "item": stock.item_id,
+            "quantity": stock.quantity,
+            "last_updated": stock.last_updated
+        }
+        for stock in stocks
+    ]
 
     return Response(data)
