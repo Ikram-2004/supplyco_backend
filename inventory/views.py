@@ -37,7 +37,6 @@ API_KEY = "MY_SUPPLYCO_SECRET_KEY"
 @api_view(['GET'])
 def updated_stock(request):
 
-    # ✅ API KEY (works for both curl + browser)
     key = request.headers.get("X-API-KEY") or request.GET.get("api_key")
 
     if key != API_KEY:
@@ -45,7 +44,6 @@ def updated_stock(request):
 
     last_sync_time = request.GET.get('last_sync_time')
 
-    # ✅ SIMPLE FILTER (your old working logic)
     if last_sync_time:
         try:
             stocks = Stock.objects.filter(
@@ -56,24 +54,13 @@ def updated_stock(request):
     else:
         stocks = Stock.objects.all().order_by('last_updated')
 
-    data = [
-        {
-            "store": stock.store_id,
-            "item": stock.item_id,
-            "quantity": stock.quantity,
-            "price": stock.item.price_per_kg if stock.item else 0,
-            "last_updated": stock.last_updated
-        }
-        for stock in stocks
-    ]
+    data = list(
+        stocks.values(
+            'store_id',
+            'item_id',
+            'quantity',
+            'last_updated'
+        )
+    )
 
     return Response(data)
-
-
-
-
-
-
-
-
-
