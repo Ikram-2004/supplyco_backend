@@ -1,37 +1,7 @@
-# from rest_framework.decorators import api_view
-# from rest_framework.response import Response
-# from .models import Stock
-# from django.utils.dateparse import parse_datetime
-
-# @api_view(['GET'])
-# def updated_stock(request):
-#     last_sync_time = request.GET.get('last_sync_time')
-
-#     if last_sync_time:
-#         last_sync_time = parse_datetime(last_sync_time)
-#         stocks = Stock.objects.filter(last_updated__gt=last_sync_time)
-#     else:
-#         stocks = Stock.objects.all().order_by('last_updated')
-
-#     data = [
-#         {
-#             "store": stock.store.name,
-#             "item": stock.item.name,
-#             "quantity": stock.quantity,
-#             "last_updated": stock.last_updated
-#         }
-#         for stock in stocks
-#     ]
-
-#     return Response(data)
-
-
-
-
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Stock
+from .models import Stock, Item
 
 API_KEY = "MY_SUPPLYCO_SECRET_KEY"
 
@@ -62,21 +32,31 @@ def updated_stock(request):
             stocks = Stock.objects.filter(
                 last_updated__gt=last_sync_time
             ).order_by('last_updated')
+
         except Exception:
             return Response({"error": "Invalid datetime"}, status=400)
+
     else:
         stocks = Stock.objects.all().order_by('last_updated')
 
     # RESPONSE DATA
-    data = [
-        {
+    data = []
+
+    for stock in stocks:
+
+        try:
+            item = Item.objects.get(item_id=stock.item_id)
+            price = float(item.price_per_kg)
+
+        except:
+            price = None
+
+        data.append({
             "store": stock.store_id,
             "item": stock.item_id,
             "quantity": stock.quantity,
-            "price": stock.item.price_per_kg if stock.item else None,
+            "price": price,
             "last_updated": stock.last_updated
-        }
-        for stock in stocks
-    ]
+        })
 
     return Response(data)
