@@ -153,3 +153,4 @@ STATIC_URL = 'static/'
 
 #C:\Program Files\PostgreSQL\17\bin
 #cd C:\Users\hp\Desktop\django_database\databaseA
+# neon url    postgresql://neondb_owner:npg_iJRw4ABW9FpZ@ep-bitter-truth-a1r2wcc5-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
